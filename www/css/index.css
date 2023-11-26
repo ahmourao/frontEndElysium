@@ -12,13 +12,17 @@ body {
   src: url('../font/Mechsuit.otf') format('opentype');
 }
 
+
 /* Estilos para centralizar texto e botão no popup */
 .popup-text {
   text-align: center;
 }
 
-.popup-btn {
+.popup-btn-container {
+  display: block;
   width: 40%;
+  text-align: center;
+  margin: 0 auto;
 }
 
 /* presente tanto no main da pagina de login quanto na pagina home */
@@ -97,5 +101,3 @@ body {
   color: black;
   box-sizing: border-box;
 }
-
-.sair {}

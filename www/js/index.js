@@ -2,11 +2,11 @@
 
 $(document).on("pagecreate", "#loginPage", function () {
 
-  // Função para exibir um popup personalizado
+  // Inicio da Função para exibir um popup personalizado
   function showCustomPopup(message) {
     // Crie um popup com a mensagem de erro
     var popup = $("<div>").popup({
-      dismissible: false,
+      dismissible: true, // Tornar o popup clicável para fechar
       history: false,
       theme: "b",
       overlayTheme: "b",
@@ -15,13 +15,14 @@ $(document).on("pagecreate", "#loginPage", function () {
 
     // Adicione o conteúdo ao popup
     var popupText = $("<p>").addClass("popup-text").text(message);
+    var popupBtnContainer = $("<div>").addClass("popup-btn-container");
     var popupBtn = $("<a>").attr({
       href: "#",
       class: "ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-check ui-btn-icon-left ui-btn-b popup-btn",
       "data-rel": "back"
     }).text("OK");
 
-    popup.append(popupText).append(popupBtn);
+    popup.append(popupText).append(popupBtnContainer.append(popupBtn));
 
     // Associe o popup à página ativa
     popup.popup("open").enhanceWithin();
@@ -31,6 +32,7 @@ $(document).on("pagecreate", "#loginPage", function () {
       $(this).remove();
     });
   }
+  // Fim da Função para exibir um popup personalizado
 
   //Inicio da ação de submeter o formulário
   $('#loginForm').on('submit', function (event) {
@@ -43,7 +45,7 @@ $(document).on("pagecreate", "#loginPage", function () {
     const password = $('#password').val();
 
     // Substitua a URL abaixo pela URL do seu servidor de autenticação
-    const authenticationUrl = 'https://fgsdkfm.com/authenticate';
+    const authenticationUrl = 'https://itelysium.onrender.com/authenticate';
 
     // Mostrar loader enquanto aguarda resposta do servidor
     $.mobile.loading("show", {
@@ -60,21 +62,10 @@ $(document).on("pagecreate", "#loginPage", function () {
       data: { username: username, password: password },
       success: function (data) {
 
-        // Ocultar loader após a resposta do servidor
-        $.mobile.loading("hide");
-
         if (data.authenticated) {
 
           // É feito uma nova requisição para exibir o nome do usuário na página inicial, na mensagem de boas vindas
-          let url = `https://fgsdkfm.com.com/aluno?id=${parseInt(username)}`;
-
-          // Mostrar loader novamente para a segunda chamada assíncrona
-          $.mobile.loading("show", {
-            text: "Carregando dados...",
-            textVisible: true,
-            theme: "b",
-            textonly: false
-          });
+          let url = `https://itelysium.onrender.com/aluno?id=${parseInt(username)}`;
 
           // Inicio da Requisição de nome do usuário
           $.ajax({
@@ -83,7 +74,7 @@ $(document).on("pagecreate", "#loginPage", function () {
             dataType: "json",
             success: function (data) {
 
-              // Ocultar loader após a resposta do segundo servidor
+              // Ocultar loader após a resposta do servidor
               $.mobile.loading("hide");
 
               // Mudança html para adicionar o nome do usuário na página inicial
@@ -97,11 +88,16 @@ $(document).on("pagecreate", "#loginPage", function () {
               }
 
             },
-            error: function (error) {
+            error: function (xhr, status, error) {
               console.log(error);
-
-              // Ocultar loader em caso de erro
+              // Ocultar loader em caso de erro de comunicação ou timeout
               $.mobile.loading("hide");
+
+              if (status === "timeout") {
+                showCustomPopup('Tempo limite de conexão atingido. Tente novamente mais tarde.');
+              } else {
+                showCustomPopup('Sem comunicação com o servidor.');
+              }
 
             }
           });
@@ -113,7 +109,7 @@ $(document).on("pagecreate", "#loginPage", function () {
         else {
           // Ocultar loader em caso de falha na autenticação
           $.mobile.loading("hide");
-          alert('Falha na autenticação. Verifique suas credenciais.');
+          showCustomPopup('Login Inválido! Tente novamente');
         }
         //Fim da condição else de autenticação de login
 
