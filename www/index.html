@@ -75,25 +75,15 @@
       <div class="card-container">
 
         <!-- Card 0 -->
-        <a href="#" class="card-link">
+        <a href="#" class="card-link" data-card-id="card0">
           <div class="card">
-            <img src="./img/user_1077114.png" alt="Ícone de uma pesssoa." class="card-image">
-            <p class="card-text">Cadastro</p>
-          </div>
-        </a>
-
-        <!-- Card 1 -->
-        <a href="#" class="card-link">
-          <div class="card">
-            <img src="./img/user-pen_10416185.png"
-              alt="Ícone de uma pesssoa com um lápis. Significa que alterar as informações de cadastro."
-              class="card-image">
-            <p class="card-text">Atualizar cadastro</p>
+            <img src="./img/user-pen_10416185.png" alt="Ícone de uma pesssoa." class="card-image">
+            <p class="card-text">Atualizar Cadastro</p>
           </div>
         </a>
 
         <!-- Card 2 -->
-        <a href="#" class="card-link">
+        <a href="#" class="card-link" data-card-id="card2">
           <div class="card">
             <img src="./img/calendar_2886665.png" alt="Ícone de calendário." class="card-image">
             <p class="card-text">Boletim</p>
@@ -101,7 +91,7 @@
         </a>
 
         <!-- Card 3 -->
-        <a href="#" class="card-link">
+        <a href="#" class="card-link" data-card-id="card3">
           <div class="card">
             <img src="./img/scroll_8510686.png" alt="Ícone de pergaminho." class="card-image">
             <p class="card-text">Histórico</p>
@@ -109,7 +99,7 @@
         </a>
 
         <!-- Card 4 -->
-        <a href="#" class="card-link">
+        <a href="#" class="card-link" data-card-id="card4">
           <div class="card">
             <img src="./img/padlock_535194.png" alt="Imagem de um cadeado abrindo." class="card-image">
             <p class="card-text">Trancar matrícula</p>
@@ -117,7 +107,7 @@
         </a>
 
         <!-- Card 5 -->
-        <a href="#" class="card-link">
+        <a href="#" class="card-link" data-card-id="card5">
           <div class="card">
             <img src="./img/choice_9406166.png" alt="Imagem 5" class="card-image">
             <p class="card-text">Matricula</p>
@@ -125,17 +115,45 @@
         </a>
 
         <!-- Card 6 -->
-        <a href="#" class="card-link">
+        <a href="#" class="card-link" data-card-id="card6">
           <div class="card sair">
             <img src="./img/log-out_1330162.png" alt="Imagem 6" class="card-image">
             <p class="card-text">Sair</p>
           </div>
         </a>
+        
       </div>
       <!-- Fim da seção com 6 cards -->
     </div>
   </div>
 
+
+  <!-- Página de Detalhes do Aluno -->
+  <div data-role="page" id="alunoDetalhesPage">
+
+    <div role="main" class="ui-content">
+
+      <h2>Cadastro</h2>
+
+      <!-- Formulário com informações do aluno -->
+      <form id="alunoDetalhesForm">
+
+        <label for="nomeAluno">Nome completo:</label>
+        <input type="text" id="nomeAluno" disabled>
+
+        <label for="generoAluno">Gênero:</label>
+        <input type="text" id="generoAluno" disabled>
+
+        <label for="telefoneAluno">Telefone:</label>
+        <input type="text" id="telefoneAluno" disabled>
+
+        <!-- Botão para voltar à página inicial -->
+        <a href="#homePage" data-role="button" data-transition="slide"
+          class="ui-btn ui-corner-all ui-shadow ui-btn-b">Voltar</a>
+      </form>
+
+    </div>
+  </div>
 
 
   <script src="./js/index.js"></script>

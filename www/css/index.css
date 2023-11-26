@@ -113,3 +113,10 @@ body {
   color: black;
   box-sizing: border-box;
 }
+
+
+/* PAGINA DE CADASTRO */
+
+#nomeAluno[disabled], #generoAluno [disabled]{
+  color: black !important;
+}

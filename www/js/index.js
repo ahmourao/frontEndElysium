@@ -1,6 +1,3 @@
-// Declara uma variável global para armazenar o objeto aluno
-let alunoGlobal;
-
 // Inicio da Função para exibir um popup personalizado
 function showCustomPopup(message) {
   // Crie um popup com a mensagem de erro
@@ -54,12 +51,15 @@ $(document).on("pagecreate", "#loginPage", function () {
     event.preventDefault();
     // Função para evitar o comportamento padrão do formulário
 
-    const usuarioMsg = $('#usuario-home');
-    const username = $('#username').val();
-    const password = $('#password').val();
+    // Limpar o localStorage ao entrar na página de login
+    localStorage.clear();
+
+    let usuarioMsg = $('#usuario-home');
+    let username = $('#username').val();
+    let password = $('#password').val();
 
     // Substitua a URL abaixo pela URL do seu servidor de autenticação
-    const authenticationUrl = 'https://itelysium.onrender.com/authenticate';
+    let authenticationUrl = 'https://itelysium.onrender.com/authenticate';
 
     // Mostrar loader enquanto aguarda resposta do servidor
     $.mobile.loading("show", {
@@ -87,18 +87,21 @@ $(document).on("pagecreate", "#loginPage", function () {
             method: "GET",
             dataType: "json",
             success: function (data) {
-              alunoGlobal = data;
+
+              // Armazene os dados do aluno no localStorage
+              localStorage.setItem('alunoInfo', JSON.stringify(data));
+
               // Ocultar loader após a resposta do servidor
               $.mobile.loading("hide");
 
               // Mudança html para adicionar o nome do usuário na página inicial
               if (data.nomeAluno && data.sobrenomeAluno) {
+
                 let nomeCompleto = data.nomeAluno + ' ' + data.sobrenomeAluno;
                 usuarioMsg.text(nomeCompleto);
-                console.log(nomeCompleto);
-
                 // Se autenticado com sucesso, exiba a página inicial
                 showHomePage();
+
               }
 
             },
@@ -110,7 +113,7 @@ $(document).on("pagecreate", "#loginPage", function () {
               if (status === "timeout") {
                 showCustomPopup('Tempo limite de conexão atingido. Tente novamente mais tarde.');
               } else {
-                showCustomPopup('Sem comunicação com o servidor.');
+                showCustomPopup('Sem comunicação com o servidor2.');
               }
 
             }
@@ -138,7 +141,7 @@ $(document).on("pagecreate", "#loginPage", function () {
         if (status === "timeout") {
           showCustomPopup('Tempo limite de conexão atingido. Tente novamente mais tarde.');
         } else {
-          showCustomPopup('Sem comunicação com o servidor.');
+          showCustomPopup('Sem comunicação com o servidor1.');
         }
 
       }
@@ -156,6 +159,98 @@ $(document).on("pagecreate", "#loginPage", function () {
 
 });
 
+$(document).on('pagecontainerbeforechange', function (event, ui) {
+  var toPage = ui.toPage;
+
+  // Verifique se o usuário está indo para a página de login
+  if (toPage && toPage.attr('id') === 'loginPage') {
+    // Verifique se o usuário está autenticado
+    // Substitua a condição abaixo pela lógica real de verificação de autenticação
+    var isAuthenticated = false; // Substitua pelo seu método de verificação de autenticação
+
+    if (isAuthenticated) {
+      // Se autenticado, redirecione para a página desejada (por exemplo, homePage)
+      $.mobile.pageContainer.pagecontainer('change', '#homePage', { transition: 'slide' });
+      event.preventDefault(); // Evita a transição padrão para a página de login
+    }
+  }
+});
+
+
+
+$(document).on('pagebeforeshow', '#homePage', function () {
+  // Verificar se há dados de aluno no localStorage
+  if (!localStorage.getItem('alunoInfo')) {
+    // Se não houver, redirecionar para a página de login
+    $.mobile.changePage('#loginPage', { transition: 'slide' });
+  }
+});
+
+
 $(document).on("pagecreate", "#homePage", function () {
-  
+
+  // Evento de clique no card
+  $('.card-link').on('click', function () {
+    // Obtenha o identificador único do card clicado
+    const cardId = $(this).data('card-id');
+
+    // Navegue para a nova página de detalhes do aluno com base no identificador único
+    navigateToPage(cardId);
+  });
+
+  function navigateToPage(cardId) {
+    // Use um switch para determinar para qual página redirecionar com base no cardId
+    switch (cardId) {
+      case 'card0':
+        $.mobile.changePage('#alunoDetalhesPage', { transition: 'slide' });
+        break;
+      case 'card2':
+        $.mobile.changePage('#boletimPage', { transition: 'slide' });
+        break;
+      case 'card6': {
+        // Limpe o local storage
+        localStorage.removeItem('alunoInfo');
+
+        // Navegue para a página de login
+        $.mobile.changePage('#loginPage', { transition: 'slide' });
+        break;
+      }
+      // Adicione mais casos conforme necessário para outros cards
+
+      default:
+        console.log('Card não reconhecido.');
+    }
+  }
+});
+
+$(document).on("pageshow", "#alunoDetalhesPage", function () {
+  // Limpar os campos ao entrar na página
+  $('#nomeAluno').val("");
+  $('#generoAluno').val("");
+  $('#telefoneAluno').val("");
+
+  // Obtenha as informações do aluno do localStorage
+  let alunoInfo = JSON.parse(localStorage.getItem('alunoInfo'));
+
+  // Popule os campos do formulário com as informações do aluno
+  let nomeCompleto = alunoInfo.nomeAluno + ' ' + alunoInfo.sobrenomeAluno;
+  $('#nomeAluno').val(nomeCompleto);
+  $('#generoAluno').val(alunoInfo.sexoAluno);
+  $('#telefoneAluno').val(alunoInfo.telefoneAluno);
+
+  // Adicione código semelhante para outros campos conforme necessário
+});
+
+
+$(document).on("pagecreate", "#alunoDetalhesPage", function () {
+  // Obtenha as informações do aluno do localStorage
+  let alunoInfo = JSON.parse(localStorage.getItem('alunoInfo'));
+
+  // Popule os campos do formulário com as informações do aluno
+  let nomeCompleto = alunoInfo.nomeAluno + ' ' + alunoInfo.sobrenomeAluno;
+  $('#nomeAluno').val(nomeCompleto);
+  $('#generoAluno').val(alunoInfo.sexoAluno);
+  $('#telefoneAluno').val(alunoInfo.telefoneAluno);
+
+  // Adicione código semelhante para outros campos conforme necessário
 });
