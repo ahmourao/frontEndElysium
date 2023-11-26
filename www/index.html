@@ -17,13 +17,29 @@
 
 <body>
 
+  <!-- spinner de carregamento -->
+  <div id="loadingPopup" class="ui-loader ui-corner-all ui-body-a ui-loader-default">
+    <span class="ui-icon-loading"></span>
+    <h2>Enviando...</h2>
+  </div>
+
+  <!-- Popup -->
+  <div data-role="popup" id="customPopup" data-overlay-theme="b" data-theme="b" data-dismissible="false">
+    <p id="popupMessage" class="popup-text"></p>
+    <a href="#" data-rel="back"
+      class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-check ui-btn-icon-left ui-btn-b popup-btn"
+      onclick="$(this).closest('div[data-role=popup]').popup('close');">OK</a>
+  </div>
+
   <!-- Login Page -->
   <div data-role="page" id="loginPage">
+
     <div data-role="header">
       <h1 class="title">Elysium</h1>
     </div>
 
-    <div role="main" class="ui-content">
+    <div role="main" class="ui-content centered-main">
+
       <form id="loginForm">
         <label for="username">Usuario:</label>
         <input type="tel" name="username" id="username" pattern="[0-9]*" required>
@@ -34,16 +50,13 @@
         <button type="submit" data-theme="b">Acessar</button>
       </form>
 
-      <div id="loadingPopup" class="ui-loader ui-corner-all ui-body-a ui-loader-default">
-        <span class="ui-icon-loading"></span>
-        <h2>Enviando...</h2>
-      </div>
+
     </div>
 
-    <div data-role="footer">
-      <h4>Footer Text</h4>
-    </div>
+    <!-- fim do main -->
+
   </div>
+  <!-- fim da página de login -->
 
 
   <!-- Home Page -->
@@ -56,10 +69,20 @@
       <!-- Seção com 6 cards -->
       <div class="card-container">
 
+        <!-- Card 0 -->
+        <a href="#" class="card-link">
+          <div class="card">
+            <img src="./img/user_1077114.png" alt="Ícone de uma pesssoa." class="card-image">
+            <p class="card-text">Cadastro</p>
+          </div>
+        </a>
+
         <!-- Card 1 -->
         <a href="#" class="card-link">
           <div class="card">
-            <img src="./img/user-pen_10416185.png" alt="Ícone de uma pesssoa com um lápis. Significa que alterar as informações de cadastro." class="card-image">
+            <img src="./img/user-pen_10416185.png"
+              alt="Ícone de uma pesssoa com um lápis. Significa que alterar as informações de cadastro."
+              class="card-image">
             <p class="card-text">Atualizar cadastro</p>
           </div>
         </a>

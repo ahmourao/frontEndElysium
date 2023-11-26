@@ -11,9 +11,37 @@ body {
   font-family: 'Mechsuit';
   src: url('../font/Mechsuit.otf') format('opentype');
 }
-.ui-content{
+
+/* Estilos para centralizar texto e botão no popup */
+.popup-text {
+  text-align: center;
+}
+
+.popup-btn {
+  width: 40%;
+}
+
+/* presente tanto no main da pagina de login quanto na pagina home */
+.ui-content {
   box-sizing: border-box;
 }
+
+/* Estilo para centralizar a div com role="main" */
+.centered-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+  /* 100% da altura da viewport */
+}
+
+/* Estilo para o header ocupar o espaço restante */
+[data-role="header"] {
+  flex: 0 0 auto;
+  /* Não crescer, não encolher, altura automática */
+}
+
 .title {
   font-family: 'Mechsuit', sans-serif;
   text-align: center;
@@ -27,7 +55,7 @@ body {
   padding: 15px;
   box-sizing: border-box;
 }
- 
+
 .card-link {
   /* container pai do card */
   box-sizing: border-box;
@@ -70,5 +98,4 @@ body {
   box-sizing: border-box;
 }
 
-.sair{
-}
+.sair {}

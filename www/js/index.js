@@ -1,37 +1,72 @@
 
 
 $(document).on("pagecreate", "#loginPage", function () {
+
+  // Função para exibir um popup personalizado
+  function showCustomPopup(message) {
+    // Crie um popup com a mensagem de erro
+    var popup = $("<div>").popup({
+      dismissible: false,
+      history: false,
+      theme: "b",
+      overlayTheme: "b",
+      transition: "pop"
+    });
+
+    // Adicione o conteúdo ao popup
+    var popupText = $("<p>").addClass("popup-text").text(message);
+    var popupBtn = $("<a>").attr({
+      href: "#",
+      class: "ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-check ui-btn-icon-left ui-btn-b popup-btn",
+      "data-rel": "back"
+    }).text("OK");
+
+    popup.append(popupText).append(popupBtn);
+
+    // Associe o popup à página ativa
+    popup.popup("open").enhanceWithin();
+
+    // Remova o popup do DOM após ser fechado
+    popup.on("popupafterclose", function () {
+      $(this).remove();
+    });
+  }
+
+  //Inicio da ação de submeter o formulário
   $('#loginForm').on('submit', function (event) {
 
-    const usuarioMsg = $('#usuario-home');
     event.preventDefault();
+    // Função para evitar o comportamento padrão do formulário
+
+    const usuarioMsg = $('#usuario-home');
     const username = $('#username').val();
     const password = $('#password').val();
 
-    // Substitua a URL abaixo pela URL real do seu servidor de autenticação
-    const authenticationUrl = 'https://itelysium.onrender.com/authenticate';
+    // Substitua a URL abaixo pela URL do seu servidor de autenticação
+    const authenticationUrl = 'https://fgsdkfm.com/authenticate';
 
     // Mostrar loader enquanto aguarda resposta do servidor
     $.mobile.loading("show", {
-      text: "Enviando...",
+      text: "Validando...",
       textVisible: true,
       theme: "b",
       textonly: false
     });
 
-    // Simulação de requisição de autenticação
+    // Inicio da Requisição de autenticação do login
     $.ajax({
       url: authenticationUrl,
       method: 'POST',
       data: { username: username, password: password },
       success: function (data) {
+
         // Ocultar loader após a resposta do servidor
         $.mobile.loading("hide");
 
         if (data.authenticated) {
-          // Se autenticado com sucesso, exiba a página inicial
-          showHomePage();
-          let url = `https://itelysium.onrender.com/aluno?id=${parseInt(username)}`;
+
+          // É feito uma nova requisição para exibir o nome do usuário na página inicial, na mensagem de boas vindas
+          let url = `https://fgsdkfm.com.com/aluno?id=${parseInt(username)}`;
 
           // Mostrar loader novamente para a segunda chamada assíncrona
           $.mobile.loading("show", {
@@ -41,6 +76,7 @@ $(document).on("pagecreate", "#loginPage", function () {
             textonly: false
           });
 
+          // Inicio da Requisição de nome do usuário
           $.ajax({
             url: url,
             method: "GET",
@@ -50,12 +86,14 @@ $(document).on("pagecreate", "#loginPage", function () {
               // Ocultar loader após a resposta do segundo servidor
               $.mobile.loading("hide");
 
-
-              //ADICIONAR O NOME DO USUÁRIO NA PÁGINA HOME
+              // Mudança html para adicionar o nome do usuário na página inicial
               if (data.nomeAluno && data.sobrenomeAluno) {
                 let nomeCompleto = data.nomeAluno + ' ' + data.sobrenomeAluno;
                 usuarioMsg.text(nomeCompleto);
                 console.log(nomeCompleto);
+
+                // Se autenticado com sucesso, exiba a página inicial
+                showHomePage();
               }
 
             },
@@ -67,19 +105,40 @@ $(document).on("pagecreate", "#loginPage", function () {
 
             }
           });
-        } else {
+          //fim da requisição do nome do usuário
+
+        }
+        //Fim da condição if de autenticação de login
+
+        else {
           // Ocultar loader em caso de falha na autenticação
           $.mobile.loading("hide");
           alert('Falha na autenticação. Verifique suas credenciais.');
         }
+        //Fim da condição else de autenticação de login
+
+
       },
-      error: function () {
-        // Ocultar loader em caso de erro de comunicação
+      // Fim do success da requisição de login
+
+      error: function (xhr, status, error) {
+        // Ocultar loader em caso de erro de comunicação ou timeout
         $.mobile.loading("hide");
-        alert('Erro ao se comunicar com o servidor de autenticação.');
+
+        if (status === "timeout") {
+          showCustomPopup('Tempo limite de conexão atingido. Tente novamente mais tarde.');
+        } else {
+          showCustomPopup('Sem comunicação com o servidor.');
+        }
+
       }
+      // Fim do error da requisição de login
+
     });
+    // Fim da Requisição de autenticação do login
+
   });
+  //Fim da ação de submeter o formulário
 
   function showHomePage() {
     $.mobile.changePage('#homePage', { transition: 'slide' });
