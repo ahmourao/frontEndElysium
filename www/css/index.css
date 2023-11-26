@@ -1,21 +1,19 @@
-
-
 @font-face {
   font-family: 'AcademicM54';
   src: url('../font/AcademicM54.ttf') format('truetype');
-  /* Adicione outros estilos e propriedades conforme necessário */
 }
 
-body{
+body {
   font-family: 'AcademicM54';
 }
 
 @font-face {
   font-family: 'Mechsuit';
   src: url('../font/Mechsuit.otf') format('opentype');
-  /* Adicione outros estilos e propriedades conforme necessário */
 }
-
+.ui-content{
+  box-sizing: border-box;
+}
 .title {
   font-family: 'Mechsuit', sans-serif;
   text-align: center;
@@ -26,13 +24,16 @@ body{
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  padding: 20px; /* Adapte o valor conforme necessário */
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .card-link {
   box-sizing: border-box;
   width: 40%;
-  text-decoration: none; /* Remove sublinhado do link */
+  text-decoration: none;
+  /* Remove sublinhado do link */
+  box-sizing: border-box;
 }
 
 .card {
@@ -42,22 +43,31 @@ body{
   padding: 10px;
   text-align: center;
   border-radius: 16px;
-  transition: border 0.3s ease; /* Adiciona uma transição suave para a borda */
+  transition: border 0.3s ease;
+  /* Adiciona uma transição suave para a borda */
+  box-sizing: border-box;
 }
 
 .card:hover {
-  border: 8px solid #ccc; /* Cor da borda quando hover */
+  border: 8px solid #ccc;
+  /* Cor da borda quando hover */
 }
 
 .card-image {
   width: 40px;
   height: auto;
   margin: 5px 0;
+  box-sizing: border-box;
 }
 
 .card-text {
-  font-size: 14px; /* Adapte o valor conforme necessário */
+  font-size: 14px;
+  /* Adapte o valor conforme necessário */
   overflow: hidden;
   text-overflow: ellipsis;
   color: black;
+  box-sizing: border-box;
+}
+
+.sair{
 }
