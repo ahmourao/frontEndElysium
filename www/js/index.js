@@ -1,39 +1,40 @@
+// Declara uma variável global para armazenar o objeto aluno
+let alunoGlobal;
+
+// Inicio da Função para exibir um popup personalizado
+function showCustomPopup(message) {
+  // Crie um popup com a mensagem de erro
+  var popup = $("<div>").popup({
+    dismissible: true, // Tornar o popup clicável para fechar
+    history: false,
+    theme: "b",
+    overlayTheme: "b",
+    transition: "pop"
+  });
+
+  // Adicione o conteúdo ao popup
+  var popupText = $("<p>").addClass("popup-text").text(message);
+  var popupBtnContainer = $("<div>").addClass("popup-btn-container");
+  var popupBtn = $("<a>").attr({
+    href: "#",
+    class: "ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-check ui-btn-icon-left ui-btn-b popup-btn",
+    "data-rel": "back"
+  }).text("OK");
+
+  popup.append(popupText).append(popupBtnContainer.append(popupBtn));
+
+  // Associe o popup à página ativa
+  popup.popup("open").enhanceWithin();
+
+  // Remova o popup do DOM após ser fechado
+  popup.on("popupafterclose", function () {
+    $(this).remove();
+  });
+}
+// Fim da Função para exibir um popup personalizado
 
 
 $(document).on("pagecreate", "#loginPage", function () {
-
-  // Inicio da Função para exibir um popup personalizado
-  function showCustomPopup(message) {
-    // Crie um popup com a mensagem de erro
-    var popup = $("<div>").popup({
-      dismissible: true, // Tornar o popup clicável para fechar
-      history: false,
-      theme: "b",
-      overlayTheme: "b",
-      transition: "pop"
-    });
-
-    // Adicione o conteúdo ao popup
-    var popupText = $("<p>").addClass("popup-text").text(message);
-    var popupBtnContainer = $("<div>").addClass("popup-btn-container");
-    var popupBtn = $("<a>").attr({
-      href: "#",
-      class: "ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-check ui-btn-icon-left ui-btn-b popup-btn",
-      "data-rel": "back"
-    }).text("OK");
-
-    popup.append(popupText).append(popupBtnContainer.append(popupBtn));
-
-    // Associe o popup à página ativa
-    popup.popup("open").enhanceWithin();
-
-    // Remova o popup do DOM após ser fechado
-    popup.on("popupafterclose", function () {
-      $(this).remove();
-    });
-  }
-  // Fim da Função para exibir um popup personalizado
-
 
   // Adicionar funcionalidade para alternar a visibilidade da senha
   $('#togglePassword').on('click', function () {
@@ -86,7 +87,7 @@ $(document).on("pagecreate", "#loginPage", function () {
             method: "GET",
             dataType: "json",
             success: function (data) {
-
+              alunoGlobal = data;
               // Ocultar loader após a resposta do servidor
               $.mobile.loading("hide");
 
@@ -153,4 +154,8 @@ $(document).on("pagecreate", "#loginPage", function () {
     $.mobile.changePage('#homePage', { transition: 'slide' });
   }
 
+});
+
+$(document).on("pagecreate", "#homePage", function () {
+  
 });
