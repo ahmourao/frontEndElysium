@@ -24,25 +24,26 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  padding: 20px;
+  padding: 15px;
   box-sizing: border-box;
 }
-
+ 
 .card-link {
+  /* container pai do card */
   box-sizing: border-box;
-  width: 40%;
+  width: 45%;
   text-decoration: none;
   /* Remove sublinhado do link */
-  box-sizing: border-box;
 }
 
 .card {
+  /* container filho do card */
   width: 100%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 50px;
+  border-radius: 16px;
   padding: 10px;
   text-align: center;
-  border-radius: 16px;
   transition: border 0.3s ease;
   /* Adiciona uma transição suave para a borda */
   box-sizing: border-box;
@@ -55,8 +56,8 @@ body {
 
 .card-image {
   width: 40px;
+  margin-top: 10px;
   height: auto;
-  margin: 5px 0;
   box-sizing: border-box;
 }
 
