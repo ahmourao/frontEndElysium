@@ -34,6 +34,19 @@ $(document).on("pagecreate", "#loginPage", function () {
   }
   // Fim da Função para exibir um popup personalizado
 
+
+  // Adicionar funcionalidade para alternar a visibilidade da senha
+  $('#togglePassword').on('click', function () {
+    const passwordInput = $('#password');
+    const passwordType = passwordInput.attr('type');
+
+    if (passwordType === 'password') {
+      passwordInput.attr('type', 'text');
+    } else {
+      passwordInput.attr('type', 'password');
+    }
+  });
+
   //Inicio da ação de submeter o formulário
   $('#loginForm').on('submit', function (event) {
 
