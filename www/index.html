@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cordova Login Example</title>
+
+  <link rel="stylesheet" href="./css/index.css">
+
+
+  <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+  <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+</head>
+
+<body>
+
+  <!-- Login Page -->
+  <div data-role="page" id="loginPage">
+    <div data-role="header">
+      <h1 class="title">Elysium</h1>
+    </div>
+
+    <div role="main" class="ui-content">
+      <form id="loginForm">
+        <label for="username">Usuario:</label>
+        <input type="tel" name="username" id="username" pattern="[0-9]*" required>
+
+        <label for="password">Senha:</label>
+        <input type="password" name="password" id="password" required>
+
+        <button type="submit" data-theme="b">Acessar</button>
+      </form>
+
+      <div id="loadingPopup" class="ui-loader ui-corner-all ui-body-a ui-loader-default">
+        <span class="ui-icon-loading"></span>
+        <h2>Enviando...</h2>
+      </div>
+    </div>
+
+    <div data-role="footer">
+      <h4>Footer Text</h4>
+    </div>
+  </div>
+
+
+  <!-- Home Page -->
+<div data-role="page" id="homePage">
+  
+  <div role="main" class="ui-content">
+    <h2>Bem-vindo! <span id="usuario-home"></span></h2>
+    <!-- Seção com 5 cards -->
+    <div class="card-container">
+      <!-- Card 1 -->
+      <a href="#" class="card-link">
+        <div class="card">
+          <img src="./img/user-pen_10416185.png" alt="Imagem 1" class="card-image">
+          <p class="card-text">Atualizar cadastro</p>
+        </div>
+      </a>
+
+      <!-- Card 2 -->
+      <a href="#" class="card-link">
+        <div class="card">
+          <img src="./img/calendar_2886665.png" alt="Imagem 2" class="card-image">
+          <p class="card-text">Boletim</p>
+        </div>
+      </a>
+
+      <!-- Card 3 -->
+      <a href="#" class="card-link">
+        <div class="card">
+          <img src="./img/scroll_8510686.png" alt="Imagem 3" class="card-image">
+          <p class="card-text">Histórico</p>
+        </div>
+      </a>
+
+      <!-- Card 4 -->
+      <a href="#" class="card-link">
+        <div class="card">
+          <img src="./img/padlock_535194.png" alt="Imagem 4" class="card-image">
+          <p class="card-text">Trancar matrícula</p>
+        </div>
+      </a>
+
+      <!-- Card 5 -->
+      <a href="#" class="card-link">
+        <div class="card">
+          <img src="./img/choice_9406166.png" alt="Imagem 5" class="card-image">
+          <p class="card-text">Matricula</p>
+        </div>
+      </a>
+    </div>
+    <!-- Fim da seção com 5 cards -->
+  </div>
+</div>
+
+
+
+  <script src="./js/index.js"></script>
+</body>
+
+</html>
