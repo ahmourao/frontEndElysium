@@ -113,7 +113,7 @@ $(document).on("pagecreate", "#loginPage", function () {
               if (status === "timeout") {
                 showCustomPopup('Tempo limite de conexão atingido. Tente novamente mais tarde.');
               } else {
-                showCustomPopup('Sem comunicação com o servidor2.');
+                showCustomPopup('Verifique sua conexão novamente.');
               }
 
             }
@@ -141,7 +141,7 @@ $(document).on("pagecreate", "#loginPage", function () {
         if (status === "timeout") {
           showCustomPopup('Tempo limite de conexão atingido. Tente novamente mais tarde.');
         } else {
-          showCustomPopup('Sem comunicação com o servidor1.');
+          showCustomPopup('Verifique sua conexão novamente.');
         }
 
       }
@@ -274,8 +274,8 @@ $(document).on("pagecreate", "#homePage", function () {
       }
 
       case 'card4':
-        // Desabilitar todos os cards, exceto o card5
-        $('.card-link').not('[data-card-id="card5"]').css('pointer-events', 'none');
+        // Desabilitar todos os cards, exceto o card5 e o card6
+        $('.card-link').not('[data-card-id="card5"]').not('[data-card-id="card6"]').css('pointer-events', 'none');
         break;
 
       case 'card5':
