@@ -159,23 +159,6 @@ $(document).on("pagecreate", "#loginPage", function () {
 
 });
 
-$(document).on('pagecontainerbeforechange', function (event, ui) {
-  var toPage = ui.toPage;
-
-  // Verifique se o usuário está indo para a página de login
-  if (toPage && toPage.attr('id') === 'loginPage') {
-    // Verifique se o usuário está autenticado
-    // Substitua a condição abaixo pela lógica real de verificação de autenticação
-    var isAuthenticated = false; // Substitua pelo seu método de verificação de autenticação
-
-    if (isAuthenticated) {
-      // Se autenticado, redirecione para a página desejada (por exemplo, homePage)
-      $.mobile.pageContainer.pagecontainer('change', '#homePage', { transition: 'slide' });
-      event.preventDefault(); // Evita a transição padrão para a página de login
-    }
-  }
-});
-
 
 
 $(document).on('pagebeforeshow', '#homePage', function () {
@@ -226,8 +209,14 @@ $(document).on("pagecreate", "#homePage", function () {
 $(document).on("pageshow", "#alunoDetalhesPage", function () {
   // Limpar os campos ao entrar na página
   $('#nomeAluno').val("");
-  $('#generoAluno').val("");
   $('#telefoneAluno').val("");
+  $('#cepAluno').val("");
+  $('#ruaAluno').val("");
+  $('#numeroAluno').val("");
+  $('#bairroAluno').val("");
+  $("#complementoAluno").val("");
+  $('#cidadeAluno').val("");
+  $('#estadoAluno').val("");
 
   // Obtenha as informações do aluno do localStorage
   let alunoInfo = JSON.parse(localStorage.getItem('alunoInfo'));
@@ -235,11 +224,53 @@ $(document).on("pageshow", "#alunoDetalhesPage", function () {
   // Popule os campos do formulário com as informações do aluno
   let nomeCompleto = alunoInfo.nomeAluno + ' ' + alunoInfo.sobrenomeAluno;
   $('#nomeAluno').val(nomeCompleto);
-  $('#generoAluno').val(alunoInfo.sexoAluno);
   $('#telefoneAluno').val(alunoInfo.telefoneAluno);
+  $('#cepAluno').val(alunoInfo.cep);
+  $('#ruaAluno').val(alunoInfo.nomeRua);
+  $('#numeroAluno').val(alunoInfo.numeroRua);
+  $('#bairroAluno').val(alunoInfo.nomeBairro);
+  // Acesse a propriedade complementoMoradia e substitua por espaço em branco se for nulo
+  let complementoMoradia = alunoInfo.complementoMoradia !== null ? alunoInfo.complementoMoradia : '';
+  $('#complementoAluno').val(complementoMoradia);
+  $('#cidadeAluno').val(alunoInfo.nomeCidade);
+  $('#estadoAluno').val(alunoInfo.siglaEstado);
+
 
   // Adicione código semelhante para outros campos conforme necessário
 });
+
+// Função para preencher os campos de endereço usando a API ViaCEP
+function preencherEndereco(cep) {
+  $.ajax({
+    url: `https://viacep.com.br/ws/${cep}/json/`,
+    dataType: 'json',
+    success: function (data) {
+      if (!data.erro) {
+        $('#ruaAluno').val(data.logradouro);
+        $('#bairroAluno').val(data.bairro);
+        $('#cidadeAluno').val(data.localidade);
+        $('#estadoAluno').val(data.uf);
+        // Preencha outros campos conforme necessário
+      } else {
+        showCustomPopup('CEP não encontrado');
+      }
+    },
+    error: function () {
+      showCustomPopup("Erro ao buscar o CEP. Verifique sua conexão com a internet.");
+    }
+  });
+}
+
+// Evento de clique no botão "Validar CEP"
+$('#validarCep').on('click', function () {
+  const cep = $('#cepAluno').val().replace(/\D/g, ''); // Remove caracteres não numéricos
+  if (cep.length === 8) {
+    preencherEndereco(cep);
+  } else {
+    alert('CEP inválido. Informe os 8 dígitos do CEP.');
+  }
+});
+
 
 
 $(document).on("pagecreate", "#alunoDetalhesPage", function () {
@@ -249,8 +280,108 @@ $(document).on("pagecreate", "#alunoDetalhesPage", function () {
   // Popule os campos do formulário com as informações do aluno
   let nomeCompleto = alunoInfo.nomeAluno + ' ' + alunoInfo.sobrenomeAluno;
   $('#nomeAluno').val(nomeCompleto);
-  $('#generoAluno').val(alunoInfo.sexoAluno);
   $('#telefoneAluno').val(alunoInfo.telefoneAluno);
+
+  $('#cepAluno').val(alunoInfo.cep);
+  $('#ruaAluno').val(alunoInfo.nomeRua);
+  $('#numeroAluno').val(alunoInfo.numeroRua);
+  $('#bairroAluno').val(alunoInfo.nomeBairro);
+  // Acesse a propriedade complementoMoradia e substitua por espaço em branco se for nulo
+  let complementoMoradia = alunoInfo.complementoMoradia !== null ? alunoInfo.complementoMoradia : '';
+  $('#complementoAluno').val(complementoMoradia);
+  $('#cidadeAluno').val(alunoInfo.nomeCidade);
+  $('#estadoAluno').val(alunoInfo.siglaEstado);
+
+
+  $('#alunoDetalhesForm').on('submit', function (event) {
+
+
+    event.preventDefault();
+    // Obtenha os valores dos campos do formulário
+    let ra = alunoInfo.ra;
+
+    let telefoneAluno = $('#telefoneAluno').val();
+    let cepAluno = $('#cepAluno').val();
+    let ruaAluno = $('#ruaAluno').val();
+    let numeroAluno = $('#numeroAluno').val();
+    let bairroAluno = $('#bairroAluno').val();
+    let complementoAluno = $('#complementoAluno').val();
+    let cidadeAluno = $('#cidadeAluno').val();
+    let estadoAluno = $('#estadoAluno').val();
+
+    // Validação do número de telefone com regex
+    var telefoneRegex = /^\(\d{2}\)\s\d{4,5}-\d{4}$/;
+    if (!telefoneRegex.test(telefoneAluno)) {
+      // Se o número de telefone não estiver no formato correto, exiba uma mensagem de erro
+      alert('Por favor, insira um número de telefone válido no formato (xx) xxxxx-xxxx ou (xx) xxxx-xxxx');
+      return false; // Impede o envio do formulário
+    } else {
+
+      // Criação do objeto com as informações a serem enviadas
+      let dadosAluno = {
+        ra: ra,
+        telefoneAluno: telefoneAluno,
+        cepAluno: cepAluno,
+        ruaAluno: ruaAluno,
+        numeroAluno: numeroAluno,
+        bairroAluno: bairroAluno,
+        complementoAluno: complementoAluno,
+        cidadeAluno: cidadeAluno,
+        estadoAluno: estadoAluno
+      };
+      console.log(dadosAluno);
+      // Convertendo o objeto para JSON
+      let jsonData = JSON.stringify(dadosAluno);
+
+      // Mostrar loader enquanto aguarda resposta do servidor
+      $.mobile.loading("show", {
+        text: "Validando...",
+        textVisible: true,
+        theme: "b",
+        textonly: false
+      });
+
+      // Inicio da Requisição de nome do usuário
+      let url = "https://itelysium.onrender.com/aluno/alterar";
+      $.ajax({
+        url: url,
+        method: "PUT",
+        dataType: "json",
+        data: jsonData,
+        contentType: "application/json",
+        success: function (data) {
+
+          // Armazene os dados do aluno no localStorage
+          localStorage.setItem('alunoInfo', JSON.stringify(data));
+
+          // Ocultar loader após a resposta do servidor
+          $.mobile.loading("hide");
+
+          // Redirecionar para a homePage após o sucesso
+          $.mobile.changePage('#homePage', { transition: 'slide' });
+        },
+        error: function (xhr, status, error) {
+          // Função chamada em caso de erro
+          console.error('Erro:', status, error);
+          console.log(xhr.responseText); // Adicione esta linha para imprimir a resposta do servidor
+          // Ocultar loader em caso de erro de comunicação ou timeout
+          $.mobile.loading("hide");
+          console.log('Enviando requisição para:', url);
+          console.log('Dados do Aluno:', jsonData);
+
+
+          if (status === "timeout") {
+            showCustomPopup('Tempo limite de conexão atingido. Tente novamente mais tarde.');
+          } else {
+            showCustomPopup('Sem comunicação com o servidor2.');
+          }
+        }
+      });
+      //fim da requisição do nome do usuário
+    }
+
+
+  });
 
   // Adicione código semelhante para outros campos conforme necessário
 });

@@ -121,7 +121,7 @@
             <p class="card-text">Sair</p>
           </div>
         </a>
-        
+
       </div>
       <!-- Fim da seção com 6 cards -->
     </div>
@@ -133,25 +133,71 @@
 
     <div role="main" class="ui-content">
 
-      <h2>Cadastro</h2>
+      <div class="container mt-5">
 
-      <!-- Formulário com informações do aluno -->
-      <form id="alunoDetalhesForm">
+        <h2 class="text-center mb-4">Cadastro</h2>
 
-        <label for="nomeAluno">Nome completo:</label>
-        <input type="text" id="nomeAluno" disabled>
+        <div class="text-center mb-4">
+          <a href="#homePage" data-role="button" data-transition="slide" class="btn btn-primary">Voltar</a>
+        </div>
 
-        <label for="generoAluno">Gênero:</label>
-        <input type="text" id="generoAluno" disabled>
+        <form id="alunoDetalhesForm">
+          <h3>Informações Pessoais</h3>
 
-        <label for="telefoneAluno">Telefone:</label>
-        <input type="text" id="telefoneAluno" disabled>
+          <div class="mb-3">
+            <label for="nomeAluno" class="form-label">Nome completo:</label>
+            <input type="text" class="form-control" id="nomeAluno" disabled>
+          </div>
 
-        <!-- Botão para voltar à página inicial -->
-        <a href="#homePage" data-role="button" data-transition="slide"
-          class="ui-btn ui-corner-all ui-shadow ui-btn-b">Voltar</a>
-      </form>
+          <div class="mb-3">
+            <label for="telefoneAluno" class="form-label">Telefone: <i>(11) 11111-1111</i></label>
+            <input type="text" class="form-control" id="telefoneAluno" maxlength="15">
+          </div>
 
+          <h3>Endereço</h3>
+
+          <div class="mb-3">
+            <label for="cepAluno" class="form-label">CEP: <i>(11111-111)</i></label>
+            <input type="text" class="form-control" id="cepAluno" maxlength="9">
+            <button type="button" class="btn btn-primary" id="validarCep">Validar CEP</button>
+          </div>
+
+          <div class="mb-3">
+            <label for="ruaAluno" class="form-label">Rua:</label>
+            <input type="text" class="form-control" id="ruaAluno">
+          </div>
+
+          <div class="mb-3">
+            <label for="numeroAluno" class="form-label">Número:</label>
+            <input type="number" class="form-control" id="numeroAluno" maxlength="5">
+          </div>
+
+          <div class="mb-3">
+            <label for="bairroAluno" class="form-label">Bairro:</label>
+            <input type="text" class="form-control" id="bairroAluno" disabled>
+          </div>
+
+          <div class="mb-3">
+            <label for="complementoAluno" class="form-label">Complemento:</label>
+            <input type="text" class="form-control" id="complementoAluno" maxlength="50">
+          </div>
+
+          <div class="mb-3">
+            <label for="cidadeAluno" class="form-label">Cidade:</label>
+            <input type="text" class="form-control" id="cidadeAluno" disabled>
+          </div>
+
+          <div class="mb-3">
+            <label for="estadoAluno" class="form-label">Sigla estado:</label>
+            <input type="text" class="form-control" id="estadoAluno" disabled>
+          </div>
+
+
+          <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary">Submeter</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 
