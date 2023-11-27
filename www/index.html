@@ -101,7 +101,7 @@
         <!-- Card 4 -->
         <a href="#" class="card-link" data-card-id="card4">
           <div class="card">
-            <img src="./img/padlock_535194.png" alt="Imagem de um cadeado abrindo." class="card-image">
+            <img src="./img/padlock_161096.png" alt="Imagem de um cadeado abrindo." class="card-image">
             <p class="card-text">Trancar matrícula</p>
           </div>
         </a>
@@ -109,8 +109,8 @@
         <!-- Card 5 -->
         <a href="#" class="card-link" data-card-id="card5">
           <div class="card">
-            <img src="./img/choice_9406166.png" alt="Imagem 5" class="card-image">
-            <p class="card-text">Matricula</p>
+            <img src="./img/padlock_535194.png" alt="Imagem 5" class="card-image">
+            <p class="card-text">Abrir matricula</p>
           </div>
         </a>
 
@@ -131,75 +131,150 @@
   <!-- Página de Detalhes do Aluno -->
   <div data-role="page" id="alunoDetalhesPage">
 
-    <div role="main" class="ui-content">
+    <div role="main" class="ui-content custom-form">
 
       <div class="container mt-5">
 
-        <h2 class="text-center mb-4">Cadastro</h2>
+        <h2 class="text-center mb-4">Atualizar Cadastro</h2>
 
-        <div class="text-center mb-4">
-          <a href="#homePage" data-role="button" data-transition="slide" class="btn btn-primary">Voltar</a>
+        <div class="text-left mb-4">
+          <a href="#homePage" data-role="button" data-transition="slide" class="ui-btn ui-corner-all ui-shadow ui-btn-b"
+            style="width: 100px;">Voltar</a>
         </div>
 
         <form id="alunoDetalhesForm">
           <h3>Informações Pessoais</h3>
 
-          <div class="mb-3">
-            <label for="nomeAluno" class="form-label">Nome completo:</label>
-            <input type="text" class="form-control" id="nomeAluno" disabled>
+          <div class="ui-field-contain">
+            <label for="nomeAluno">Nome completo:</label>
+            <input type="text" id="nomeAluno" disabled>
           </div>
 
-          <div class="mb-3">
-            <label for="telefoneAluno" class="form-label">Telefone: <i>(11) 11111-1111</i></label>
-            <input type="text" class="form-control" id="telefoneAluno" maxlength="15">
+          <div class="ui-field-contain">
+            <label for="telefoneAluno">Telefone:</label>
+            <input type="tel" id="telefoneAluno" data-clear-btn="true" maxlength="15">
           </div>
 
           <h3>Endereço</h3>
 
-          <div class="mb-3">
-            <label for="cepAluno" class="form-label">CEP: <i>(11111-111)</i></label>
-            <input type="text" class="form-control" id="cepAluno" maxlength="9">
-            <button type="button" class="btn btn-primary" id="validarCep">Validar CEP</button>
+          <div class="ui-field-contain">
+            <label for="cepAluno">CEP:</label>
+            <input type="text" id="cepAluno" data-clear-btn="true" maxlength="9">
+            <button type="button" id="validarCep" class="ui-btn ui-corner-all ui-shadow ui-btn-b"
+              style="width: 100px;">Validar</button>
           </div>
 
-          <div class="mb-3">
-            <label for="ruaAluno" class="form-label">Rua:</label>
-            <input type="text" class="form-control" id="ruaAluno">
+          <div class="ui-field-contain">
+            <label for="ruaAluno">Rua:</label>
+            <input type="text" id="ruaAluno">
           </div>
 
-          <div class="mb-3">
-            <label for="numeroAluno" class="form-label">Número:</label>
-            <input type="number" class="form-control" id="numeroAluno" maxlength="5">
+          <div class="ui-field-contain">
+            <label for="numeroAluno">Número:</label>
+            <input type="number" id="numeroAluno" data-clear-btn="true" maxlength="5">
           </div>
 
-          <div class="mb-3">
-            <label for="bairroAluno" class="form-label">Bairro:</label>
-            <input type="text" class="form-control" id="bairroAluno" disabled>
+          <div class="ui-field-contain">
+            <label for="bairroAluno">Bairro:</label>
+            <input type="text" id="bairroAluno" disabled>
           </div>
 
-          <div class="mb-3">
-            <label for="complementoAluno" class="form-label">Complemento:</label>
-            <input type="text" class="form-control" id="complementoAluno" maxlength="50">
+          <div class="ui-field-contain">
+            <label for="complementoAluno">Complemento:</label>
+            <input type="text" id="complementoAluno" maxlength="50">
           </div>
 
-          <div class="mb-3">
-            <label for="cidadeAluno" class="form-label">Cidade:</label>
-            <input type="text" class="form-control" id="cidadeAluno" disabled>
+          <div class="ui-field-contain">
+            <label for="cidadeAluno">Cidade:</label>
+            <input type="text" id="cidadeAluno" disabled>
           </div>
 
-          <div class="mb-3">
-            <label for="estadoAluno" class="form-label">Sigla estado:</label>
-            <input type="text" class="form-control" id="estadoAluno" disabled>
+          <div class="ui-field-contain">
+            <label for="estadoAluno">Sigla estado:</label>
+            <input type="text" id="estadoAluno" disabled>
           </div>
-
 
           <div class="text-center mt-4">
-            <button type="submit" class="btn btn-primary">Submeter</button>
+            <button type="submit" class="ui-btn ui-corner-all ui-shadow ui-btn-b">Alterar cadastro</button>
           </div>
         </form>
       </div>
     </div>
   </div>
+
+  <!-- Página de Histórico Escolar -->
+  <div id="historicoEscolarPage" data-role="page">
+
+    <div role="main" class="ui-content">
+
+      <div class="container mt-5">
+
+        <h2 class="text-center mb-4">Histórico Escolar</h2>
+
+        <!-- Botão para voltar à página home -->
+        <div class="text-left mb-4">
+          <a href="#" data-role="button" onclick="voltarHomePage()" data-transition="slide" data-icon="back"
+            data-iconpos="notext" class="ui-btn ui-corner-all ui-shadow ui-btn-b" style="width: 100px;">Voltar</a>
+        </div>
+
+        <!-- Tabela para exibir o histórico escolar -->
+        <table id="historicoTable" data-role="table" class="ui-responsive table-stripe" data-mode="columntoggle">
+          <thead>
+            <tr>
+              <th>Disciplina</th>
+              <th>Freq.</th>
+              <th>N1</th>
+              <th>N2</th>
+              <th>Média</th>
+              <th>Situação</th>
+            </tr>
+          </thead>
+          <tbody id="historicoBody">
+            <!-- Os registros da tabela serão adicionados aqui dinamicamente -->
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Página do Boletim -->
+<div id="boletimPage" data-role="page">
+
+  <div role="main" class="ui-content">
+
+    <div class="container mt-5">
+
+      <h2 class="text-center mb-4">Boletim</h2>
+
+      <!-- Botão para voltar à página home -->
+      <div class="text-left mb-4">
+        <a href="#" data-role="button" onclick="voltarHomePage()" data-transition="slide" data-icon="back"
+          data-iconpos="notext" class="ui-btn ui-corner-all ui-shadow ui-btn-b" style="width: 100px;">Voltar</a>
+      </div>
+
+      <!-- Tabela para exibir o boletim -->
+      <table id="boletimTable" data-role="table" class="ui-responsive table-stripe" data-mode="columntoggle">
+        <thead>
+          <tr>
+            <th>Disciplina</th>
+            <th>Freq.</th>
+            <th>N1</th>
+            <th>N2</th>
+            <th>Média</th>
+            <th>Situação</th>
+          </tr>
+        </thead>
+        <tbody id="boletimBody">
+          <!-- Os registros da tabela serão adicionados aqui dinamicamente -->
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
+
 
 
   <script src="./js/index.js"></script>

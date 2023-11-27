@@ -162,6 +162,7 @@ $(document).on("pagecreate", "#loginPage", function () {
 
 
 $(document).on('pagebeforeshow', '#homePage', function () {
+  //NÃO PODE ENTRAR NA HOME SEM TER LOGIN
   // Verificar se há dados de aluno no localStorage
   if (!localStorage.getItem('alunoInfo')) {
     // Se não houver, redirecionar para a página de login
@@ -174,37 +175,200 @@ $(document).on("pagecreate", "#homePage", function () {
 
   // Evento de clique no card
   $('.card-link').on('click', function () {
-    // Obtenha o identificador único do card clicado
+    // Obtendo o identificador único do card clicado
     const cardId = $(this).data('card-id');
 
-    // Navegue para a nova página de detalhes do aluno com base no identificador único
+    // Navegue para a nova página com base no identificador único
     navigateToPage(cardId);
   });
 
   function navigateToPage(cardId) {
-    // Use um switch para determinar para qual página redirecionar com base no cardId
+    // Switch para determinar para qual página redirecionar com base no cardId
     switch (cardId) {
       case 'card0':
+
         $.mobile.changePage('#alunoDetalhesPage', { transition: 'slide' });
         break;
-      case 'card2':
-        $.mobile.changePage('#boletimPage', { transition: 'slide' });
-        break;
-      case 'card6': {
-        // Limpe o local storage
-        localStorage.removeItem('alunoInfo');
 
-        // Navegue para a página de login
-        $.mobile.changePage('#loginPage', { transition: 'slide' });
+      case 'card2': {
+        // Obtendo as informações do aluno do localStorage
+        let alunoInfo = JSON.parse(localStorage.getItem('alunoInfo'));
+
+        $.mobile.loading("show", {
+          text: "Carregando informações...",
+          textVisible: true,
+          theme: "b",
+          textonly: false
+        });
+
+
+        $.ajax({
+          url: `https://itelysium.onrender.com/matricula/boletim?id=${parseInt(alunoInfo.ra)}`,
+          method: 'GET',
+          dataType: 'json',
+          contentType: "application/json",
+          success: function (data) {
+            console.log(data);
+            //Função para preencher a tabela na página de histórico escolar
+            preencherTabelaBoletim(data);
+            $.mobile.loading("hide");
+            // Navegue para a página de histórico escolar
+            $.mobile.changePage('#boletimPage', { transition: 'slide' });
+
+          },
+          error: function (xhr, status, error) {
+            $.mobile.loading("hide");
+            console.error('Erro:', status, error);
+            console.log(xhr.responseText); // imprimir a resposta do servidor
+            console.error('Erro ao obter dados do boletim:', status, error);
+          }
+        });
         break;
       }
-      // Adicione mais casos conforme necessário para outros cards
+
+      case 'card6': {
+
+        // o card 6 é o de sair então tem que limpar o armazenamento
+        localStorage.removeItem('alunoInfo');
+
+        $.mobile.changePage('#loginPage', { transition: 'slide' });
+        break;
+
+      }
+      case 'card3': {
+
+        // Obtendo as informações do aluno do localStorage
+        let alunoInfo = JSON.parse(localStorage.getItem('alunoInfo'));
+
+        $.mobile.loading("show", {
+          text: "Carregando informações...",
+          textVisible: true,
+          theme: "b",
+          textonly: false
+        });
+
+
+        $.ajax({
+          url: `https://itelysium.onrender.com/historicoEscolar?id=${parseInt(alunoInfo.ra)}`,
+          method: 'GET',
+          dataType: 'json',
+          contentType: "application/json",
+          success: function (data) {
+
+            //Função para preencher a tabela na página de histórico escolar
+            preencherTabelaHistoricoEscolar(data);
+            $.mobile.loading("hide");
+            // Navegue para a página de histórico escolar
+            $.mobile.changePage('#historicoEscolarPage', { transition: 'slide' });
+
+          },
+          error: function (xhr, status, error) {
+            $.mobile.loading("hide");
+            console.error('Erro:', status, error);
+            console.log(xhr.responseText); // imprimir a resposta do servidor
+            console.error('Erro ao obter dados do histórico escolar:', status, error);
+          }
+        });
+        break;
+
+      }
+
+      case 'card4':
+        // Desabilitar todos os cards, exceto o card5
+        $('.card-link').not('[data-card-id="card5"]').css('pointer-events', 'none');
+        break;
+
+      case 'card5':
+        // Habilitar todos os cards
+        $('.card-link').css('pointer-events', 'auto');
+        break;
 
       default:
         console.log('Card não reconhecido.');
     }
   }
 });
+
+
+// Função para preencher a tabela com dados do histórico escolar
+function preencherTabelaHistoricoEscolar(data) {
+  var table = $('#historicoTable');
+
+  // Limpar a tabela antes de adicionar novos registros
+  table.empty();
+
+  // Criar a tabela novamente
+  table.append('<thead><tr><th>Disciplina</th><th>Freq.</th><th>N1</th><th>N2</th><th>Média</th><th>Situação</th></tr></thead>');
+  var tableBody = $('<tbody>').attr('id', 'historicoBody');
+  table.append(tableBody);
+
+  // Iterar sobre os dados e adicionar linhas à tabela
+  data.forEach(function (registro) {
+    var disciplina = registro.disciplina.nomeDisciplina;
+    var frequencia = registro.frequencia;
+    var nota1 = registro.nota1;
+    var nota2 = registro.nota2;
+    var media = registro.media;
+    var situacao = registro.situacao;
+
+    // Adicionar uma nova linha à tabela
+    var newRow = $('<tr>').append(
+      $('<td>').text(disciplina),
+      $('<td>').text(frequencia),
+      $('<td>').text(nota1),
+      $('<td>').text(nota2),
+      $('<td>').text(media),
+      $('<td>').text(situacao)
+    );
+
+    // Adicionar a nova linha ao corpo da tabela
+    tableBody.append(newRow);
+  });
+
+}
+
+// Função para preencher a tabela com dados do histórico escolar
+function preencherTabelaBoletim(data) {
+  var table = $('#boletimTable');
+
+  // Limpar a tabela antes de adicionar novos registros
+  table.empty();
+
+  // Criar a tabela novamente
+  table.append('<thead><tr><th>Disciplina</th><th>Freq.</th><th>N1</th><th>N2</th><th>Média</th><th>Situação</th></tr></thead>');
+  var tableBody = $('<tbody>').attr('id', 'boletimBody');
+  table.append(tableBody);
+
+  // Iterar sobre os dados e adicionar linhas à tabela
+  data.forEach(function (registro) {
+    var disciplina = registro.disciplina.nomeDisciplina;
+    var frequencia = registro.frequencia;
+    var nota1 = registro.nota1;
+    var nota2 = registro.nota2;
+    var media = registro.media;
+    var situacao = registro.situacao;
+
+    // Adicionar uma nova linha à tabela
+    var newRow = $('<tr>').append(
+      $('<td>').text(disciplina),
+      $('<td>').text(frequencia),
+      $('<td>').text(nota1),
+      $('<td>').text(nota2),
+      $('<td>').text(media),
+      $('<td>').text(situacao)
+    );
+
+    // Adicionar a nova linha ao corpo da tabela
+    tableBody.append(newRow);
+  });
+
+
+}
+
+function voltarHomePage() {
+  $.mobile.changePage('#homePage', { transition: 'slide' });
+}
+
 
 $(document).on("pageshow", "#alunoDetalhesPage", function () {
   // Limpar os campos ao entrar na página
@@ -218,10 +382,10 @@ $(document).on("pageshow", "#alunoDetalhesPage", function () {
   $('#cidadeAluno').val("");
   $('#estadoAluno').val("");
 
-  // Obtenha as informações do aluno do localStorage
+  // Obtendo as informações do aluno do localStorage
   let alunoInfo = JSON.parse(localStorage.getItem('alunoInfo'));
 
-  // Popule os campos do formulário com as informações do aluno
+  // Preenchendo os campos do formulário com as informações do aluno
   let nomeCompleto = alunoInfo.nomeAluno + ' ' + alunoInfo.sobrenomeAluno;
   $('#nomeAluno').val(nomeCompleto);
   $('#telefoneAluno').val(alunoInfo.telefoneAluno);
@@ -229,33 +393,49 @@ $(document).on("pageshow", "#alunoDetalhesPage", function () {
   $('#ruaAluno').val(alunoInfo.nomeRua);
   $('#numeroAluno').val(alunoInfo.numeroRua);
   $('#bairroAluno').val(alunoInfo.nomeBairro);
-  // Acesse a propriedade complementoMoradia e substitua por espaço em branco se for nulo
+  // Substituindo propriedade complementoMoradia por espaço em branco se for nulo
   let complementoMoradia = alunoInfo.complementoMoradia !== null ? alunoInfo.complementoMoradia : '';
   $('#complementoAluno').val(complementoMoradia);
   $('#cidadeAluno').val(alunoInfo.nomeCidade);
   $('#estadoAluno').val(alunoInfo.siglaEstado);
 
-
-  // Adicione código semelhante para outros campos conforme necessário
 });
+
 
 // Função para preencher os campos de endereço usando a API ViaCEP
 function preencherEndereco(cep) {
+
+  // Mostrar loader enquanto aguarda resposta do servidor
+  $.mobile.loading("show", {
+    text: "Validando CEP...",
+    textVisible: true,
+    theme: "b",
+    textonly: false
+  });
+
   $.ajax({
     url: `https://viacep.com.br/ws/${cep}/json/`,
     dataType: 'json',
     success: function (data) {
+
+      // Ocultar loader após a resposta do servidor
+      $.mobile.loading("hide");
       if (!data.erro) {
+
         $('#ruaAluno').val(data.logradouro);
         $('#bairroAluno').val(data.bairro);
         $('#cidadeAluno').val(data.localidade);
         $('#estadoAluno').val(data.uf);
-        // Preencha outros campos conforme necessário
+
       } else {
+
         showCustomPopup('CEP não encontrado');
+
       }
     },
     error: function () {
+      // Ocultar loader após a resposta do servidor
+      $.mobile.loading("hide");
       showCustomPopup("Erro ao buscar o CEP. Verifique sua conexão com a internet.");
     }
   });
@@ -267,17 +447,17 @@ $('#validarCep').on('click', function () {
   if (cep.length === 8) {
     preencherEndereco(cep);
   } else {
-    alert('CEP inválido. Informe os 8 dígitos do CEP.');
+    showCustomPopup("CEP inválido. Informe os 8 dígitos do CEP.");
   }
 });
 
 
 
 $(document).on("pagecreate", "#alunoDetalhesPage", function () {
-  // Obtenha as informações do aluno do localStorage
+  // Obtendo as informações do aluno do localStorage
   let alunoInfo = JSON.parse(localStorage.getItem('alunoInfo'));
 
-  // Popule os campos do formulário com as informações do aluno
+  // Populando os campos do formulário com as informações do aluno
   let nomeCompleto = alunoInfo.nomeAluno + ' ' + alunoInfo.sobrenomeAluno;
   $('#nomeAluno').val(nomeCompleto);
   $('#telefoneAluno').val(alunoInfo.telefoneAluno);
@@ -286,7 +466,7 @@ $(document).on("pagecreate", "#alunoDetalhesPage", function () {
   $('#ruaAluno').val(alunoInfo.nomeRua);
   $('#numeroAluno').val(alunoInfo.numeroRua);
   $('#bairroAluno').val(alunoInfo.nomeBairro);
-  // Acesse a propriedade complementoMoradia e substitua por espaço em branco se for nulo
+  // Substituindo propriedade complementoMoradia por espaço em branco se for nulo
   let complementoMoradia = alunoInfo.complementoMoradia !== null ? alunoInfo.complementoMoradia : '';
   $('#complementoAluno').val(complementoMoradia);
   $('#cidadeAluno').val(alunoInfo.nomeCidade);
@@ -295,9 +475,7 @@ $(document).on("pagecreate", "#alunoDetalhesPage", function () {
 
   $('#alunoDetalhesForm').on('submit', function (event) {
 
-
     event.preventDefault();
-    // Obtenha os valores dos campos do formulário
     let ra = alunoInfo.ra;
 
     let telefoneAluno = $('#telefoneAluno').val();
@@ -313,7 +491,7 @@ $(document).on("pagecreate", "#alunoDetalhesPage", function () {
     var telefoneRegex = /^\(\d{2}\)\s\d{4,5}-\d{4}$/;
     if (!telefoneRegex.test(telefoneAluno)) {
       // Se o número de telefone não estiver no formato correto, exiba uma mensagem de erro
-      alert('Por favor, insira um número de telefone válido no formato (xx) xxxxx-xxxx ou (xx) xxxx-xxxx');
+      showCustomPopup('Por favor, insira um número de telefone válido no formato (xx) xxxxx-xxxx ou (xx) xxxx-xxxx');
       return false; // Impede o envio do formulário
     } else {
 
@@ -329,7 +507,7 @@ $(document).on("pagecreate", "#alunoDetalhesPage", function () {
         cidadeAluno: cidadeAluno,
         estadoAluno: estadoAluno
       };
-      console.log(dadosAluno);
+
       // Convertendo o objeto para JSON
       let jsonData = JSON.stringify(dadosAluno);
 
@@ -341,7 +519,7 @@ $(document).on("pagecreate", "#alunoDetalhesPage", function () {
         textonly: false
       });
 
-      // Inicio da Requisição de nome do usuário
+      // Inicio da Requisição de alterar o cadastro
       let url = "https://itelysium.onrender.com/aluno/alterar";
       $.ajax({
         url: url,
@@ -351,7 +529,7 @@ $(document).on("pagecreate", "#alunoDetalhesPage", function () {
         contentType: "application/json",
         success: function (data) {
 
-          // Armazene os dados do aluno no localStorage
+          // Altero o dado local do aluno
           localStorage.setItem('alunoInfo', JSON.stringify(data));
 
           // Ocultar loader após a resposta do servidor
@@ -361,27 +539,23 @@ $(document).on("pagecreate", "#alunoDetalhesPage", function () {
           $.mobile.changePage('#homePage', { transition: 'slide' });
         },
         error: function (xhr, status, error) {
-          // Função chamada em caso de erro
+
           console.error('Erro:', status, error);
           console.log(xhr.responseText); // Adicione esta linha para imprimir a resposta do servidor
           // Ocultar loader em caso de erro de comunicação ou timeout
           $.mobile.loading("hide");
-          console.log('Enviando requisição para:', url);
-          console.log('Dados do Aluno:', jsonData);
-
 
           if (status === "timeout") {
             showCustomPopup('Tempo limite de conexão atingido. Tente novamente mais tarde.');
           } else {
-            showCustomPopup('Sem comunicação com o servidor2.');
+            showCustomPopup('Sem comunicação com o servidor.');
           }
         }
       });
-      //fim da requisição do nome do usuário
+      //fim da requisição da alteração do aluno
     }
 
 
   });
 
-  // Adicione código semelhante para outros campos conforme necessário
 });
