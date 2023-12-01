@@ -55,6 +55,8 @@ $(document).on("pagecreate", "#loginPage", function () {
     localStorage.clear();
 
     let usuarioMsg = $('#usuario-home');
+
+    
     let username = $('#username').val();
     let password = $('#password').val();
 
