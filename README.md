@@ -1,6 +1,7 @@
 # Interface do app do I. T. Elysium
 
-Bem-vindo ao repositório oficial da interface do aplicativo mobile da faculdade! Este repositório contém o código-fonte e recursos relacionados.
+Bem-vindo ao repositório do aplicativo mobile da faculdade Elysium! Este repositório contém o código-fonte e recursos relacionados.
+Você pode visualizar o aplicativo clicando nesse link [video](https://drive.google.com/file/d/1Ey2VARNhcUH-bT6EFLvqhEdkQJNoCmTv/view?usp=sharing)
 
 ## Atenção!!!
 O servidor está hospedado no Render no plano gratuito, então é necessário me avisar para ligar o servidor pois o mesmo desliga depois de 30 minutos sem receber requisições.
@@ -11,6 +12,7 @@ Esse é o front end da aplicação, o back end está neste link: [github](https:
 ## Sobre o Aplicativo
 O aplicativo mobile da faculdade foi projetado para fornecer uma experiência integrada e conveniente para estudantes, professores e funcionários, mas neste momento foi construído apenas a parte do aluno.
 Com recursos intuitivos e úteis, nosso objetivo é facilitar a comunicação, o acesso a informações acadêmicas e a participação na vida acadêmica.
+Você pode visualizar o aplicativo clicando nesse link [video](https://drive.google.com/file/d/1Ey2VARNhcUH-bT6EFLvqhEdkQJNoCmTv/view?usp=sharing)
 
 ## Sobre o desenvolvimento
 Esse aplicativo surgiu de um trabalho da faculdade na qual a proposta era trabalhar as linguagens: HTML, CSS e JS (JQuery Mobile) e criar um aplicativo mobile usando a ferramenta Cordova. Ele foi projetado para sistemas Android.
